@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 from unittest.mock import Mock
 
 import pytest
-from memory_utils import mock_agent
 
 from mesa_llm.memory.memory import Memory, MemoryEntry
 from mesa_llm.module_llm import ModuleLLM
@@ -78,6 +77,7 @@ class TestMemoryParent:
         assert not hasattr(memory, "llm")
 
     def test_add_to_memory(self):
+        mock_agent = Mock()
         memory = MemoryMock(agent=mock_agent)
         # Test basic addition with observation
         memory.add_to_memory("observation", {"step": 1, "content": "Test content"})
@@ -92,7 +92,7 @@ class TestMemoryParent:
         assert memory.step_content != {}
         assert "observation" in memory.step_content
 
-    def test_add_to_memory_rejects_non_dict_content(self):
+    def test_add_to_memory_rejects_non_dict_content(self, mock_agent):
         memory = MemoryMock(agent=mock_agent)
 
         with pytest.raises(TypeError) as exc_info:
@@ -103,7 +103,7 @@ class TestMemoryParent:
             == "Expected 'content' to be dict, got str: 'raw string plan'"
         )
 
-    def test_aadd_to_memory_rejects_non_dict_content(self):
+    def test_aadd_to_memory_rejects_non_dict_content(self, mock_agent):
         memory = MemoryMock(agent=mock_agent)
 
         with pytest.raises(TypeError) as exc_info:
