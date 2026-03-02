@@ -81,7 +81,7 @@ def teleport_to_location(
         agent.cell = cell
 
     elif isinstance(agent.model.space, ContinuousSpace):
-        agent.model.space.move_agent(agent.model.space, agent, target_coordinates)
+        agent.model.space.move_agent(agent, target_coordinates)
 
     return f"agent {agent.unique_id} moved to {target_coordinates}."
 
