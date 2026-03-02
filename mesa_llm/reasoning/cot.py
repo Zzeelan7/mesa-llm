@@ -14,8 +14,8 @@ class CoTReasoning(Reasoning):
         - **agent** (LLMAgent reference)
 
     Methods:
-        - **plan(prompt, obs=None, ttl=1, selected_tools=None)** → *Plan* - Generate synchronous plan with CoT reasoning
-        - **async aplan(prompt, obs=None, ttl=1, selected_tools=None)** → *Plan* - Generate asynchronous plan with CoT reasoning
+        - **plan(obs, ttl=1, prompt=None, selected_tools=None)** → *Plan* - Generate synchronous plan with CoT reasoning
+        - **async aplan(obs, ttl=1, prompt=None, selected_tools=None)** → *Plan* - Generate asynchronous plan with CoT reasoning
 
     Reasoning Format:
         Thought 1: [Initial reasoning based on observation]
@@ -139,17 +139,25 @@ class CoTReasoning(Reasoning):
 
     async def aplan(
         self,
-        prompt: str,
         obs: Observation,
         ttl: int = 1,
+        prompt: str | None = None,
         selected_tools: list[str] | None = None,
     ) -> Plan:
         """
         Asynchronous version of plan() method for parallel planning.
         """
+        if prompt is None:
+            if self.agent.step_prompt is not None:
+                prompt = self.agent.step_prompt
+            else:
+                raise ValueError("No prompt provided and agent.step_prompt is None.")
+
         step = obs.step + 1
         llm = self.agent.llm
 
+        obs_str = str(obs)
+        await self.agent.memory.aadd_to_memory(type="Observation", content=obs_str)
         system_prompt = self.get_cot_system_prompt(obs)
         llm.system_prompt = system_prompt
 
