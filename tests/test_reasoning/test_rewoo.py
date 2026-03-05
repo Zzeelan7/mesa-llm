@@ -575,7 +575,6 @@ class TestReWOOReasoning:
         assert reasoning.remaining_tool_calls == 0
         assert result3.llm_plan.tool_calls == [mock_tool_3]  # index 2 (3-1=2)
 
-
     def test_sequential_replay_dispatches_distinct_tools(self):
         """Regression: plan() replay must dispatch A→B→C, not A→A→A.
 
@@ -604,8 +603,12 @@ class TestReWOOReasoning:
         result3 = reasoning.plan()
 
         assert result1.llm_plan.tool_calls == [tool_a], "Step 1 should dispatch tool A"
-        assert result2.llm_plan.tool_calls == [tool_b], "Step 2 should dispatch tool B, not A"
-        assert result3.llm_plan.tool_calls == [tool_c], "Step 3 should dispatch tool C, not A"
+        assert result2.llm_plan.tool_calls == [tool_b], (
+            "Step 2 should dispatch tool B, not A"
+        )
+        assert result3.llm_plan.tool_calls == [tool_c], (
+            "Step 3 should dispatch tool C, not A"
+        )
         assert reasoning.remaining_tool_calls == 0
 
     def test_sequential_replay_dispatches_distinct_tools_async(self):
@@ -630,8 +633,12 @@ class TestReWOOReasoning:
         result3 = asyncio.run(reasoning.aplan())
 
         assert result1.llm_plan.tool_calls == [tool_a], "Step 1 should dispatch tool A"
-        assert result2.llm_plan.tool_calls == [tool_b], "Step 2 should dispatch tool B, not A"
-        assert result3.llm_plan.tool_calls == [tool_c], "Step 3 should dispatch tool C, not A"
+        assert result2.llm_plan.tool_calls == [tool_b], (
+            "Step 2 should dispatch tool B, not A"
+        )
+        assert result3.llm_plan.tool_calls == [tool_c], (
+            "Step 3 should dispatch tool C, not A"
+        )
         assert reasoning.remaining_tool_calls == 0
 
 
