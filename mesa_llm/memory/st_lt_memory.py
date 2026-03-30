@@ -347,7 +347,7 @@ class STLTMemory(Memory):
                 tokens_freed = 0
                 target_tokens = current_tokens * 0.75  # Target 75% of max
 <<<<<<< HEAD
-                
+
                 for _salience, tokens, entry in entries_with_salience:
 =======
 

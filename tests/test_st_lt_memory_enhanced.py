@@ -201,12 +201,12 @@ def test_memory_stats(memory_instance):
 
     stats = memory_instance.get_memory_stats()
 <<<<<<< HEAD
-    
+
     assert len(stats['entries']) == 3, "Should report 3 entries"
     assert 'average_salience' in stats
     assert 0.0 <= stats['average_salience'] <= 1.0
     assert stats['pruning_enabled']
-    
+
 =======
 
     assert len(stats["entries"]) == 3, "Should report 3 entries"
@@ -263,7 +263,7 @@ def test_salience_pruning_removes_low_salience_entries(memory_instance):
     # Process step should trigger pruning
 <<<<<<< HEAD
     _, _evicted = memory_instance._process_step_core(pre_step=False)
-    
+
 =======
     _, evicted = memory_instance._process_step_core(pre_step=False)
 
