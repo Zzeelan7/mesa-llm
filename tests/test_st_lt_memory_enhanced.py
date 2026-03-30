@@ -199,7 +199,7 @@ def test_memory_stats(memory_instance):
     assert len(stats['entries']) == 3, "Should report 3 entries"
     assert 'average_salience' in stats
     assert 0.0 <= stats['average_salience'] <= 1.0
-    assert stats['pruning_enabled'] == True
+    assert stats['pruning_enabled']
     
     # Each entry should have salience info
     for entry_stat in stats['entries']:
@@ -247,7 +247,7 @@ def test_salience_pruning_removes_low_salience_entries(memory_instance):
     memory_instance.short_term_memory.extend([low_sal_entry, high_sal_entry])
     
     # Process step should trigger pruning
-    _, evicted = memory_instance._process_step_core(pre_step=False)
+    _, _evicted = memory_instance._process_step_core(pre_step=False)
     
     # Low-salience entry should be considered for eviction
     assert len(memory_instance.short_term_memory) <= 2, "Memory should store entries"
@@ -274,7 +274,7 @@ def test_backward_compatibility():
     
     # Should have defaults set
     assert memory.max_tokens is None, "Should allow unlimited tokens"
-    assert memory.enable_salience_pruning == True, "Salience pruning on by default"
+    assert memory.enable_salience_pruning, "Salience pruning on by default"
     assert 0 <= memory.salience_recency_weight <= 1, "Recency weight should be normalized"
 
 

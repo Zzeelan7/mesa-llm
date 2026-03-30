@@ -339,7 +339,7 @@ class STLTMemory(Memory):
                 tokens_freed = 0
                 target_tokens = current_tokens * 0.75  # Target 75% of max
                 
-                for salience, tokens, entry in entries_with_salience:
+                for _salience, tokens, entry in entries_with_salience:
                     if tokens_freed >= (current_tokens - target_tokens):
                         break
                     
@@ -364,12 +364,12 @@ class STLTMemory(Memory):
         elif (
             len(self.short_term_memory) > self.capacity
             and not self.consolidation_capacity
+            and self.short_term_memory
         ):
             # No consolidation configured — just discard the oldest entry
-            if self.short_term_memory:
-                entry = self.short_term_memory.popleft()
-                if entry not in evicted:
-                    evicted.append(entry)
+            entry = self.short_term_memory.popleft()
+            if entry not in evicted:
+                evicted.append(entry)
 
         return new_entry, evicted
 
