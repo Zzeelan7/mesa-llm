@@ -82,7 +82,7 @@ print(f"Average Salience: {stats['average_salience']:.3f}")
 | `salience_recency_weight` | float | 0.3 | Weight for recency in score (0-1) |
 | `salience_threshold` | float | 0.2 | Minimum score to keep entry |
 
-**Example**: 
+**Example**:
 - `salience_recency_weight=0.3`: 30% recency, 70% relevance
 - `salience_threshold=0.2`: Remove entries with score < 0.2
 
@@ -245,7 +245,7 @@ logger = logging.getLogger(__name__)
 def log_memory_health(agent):
     stats = agent.memory.get_memory_stats()
     usage = stats['token_usage']
-    
+
     logger.info(
         f"Memory Health: {len(stats['entries'])} entries, "
         f"{usage['token_utilization_percent']:.1f}% tokens, "
@@ -368,16 +368,16 @@ memory = STLTMemory(
 def test_memory_under_load():
     """Test memory with many entries."""
     agent = your_agent_instance
-    
+
     # Simulate many steps
     for step in range(100):
         agent.step()
         stats = agent.memory.get_memory_stats()
-        
+
         # Verify constraints
         assert stats['token_usage']['entries'] <= agent.memory.capacity + 5
         assert stats['average_salience'] > 0.1
-        
+
         # Log interesting points
         if step % 20 == 0:
             print(f"Step {step}: {stats['token_usage']}")
